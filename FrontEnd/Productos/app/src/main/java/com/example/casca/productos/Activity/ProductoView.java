@@ -29,8 +29,8 @@ public class ProductoView extends AppCompatActivity {
 
     String codigo;
     String nombreProducto;
-    String precio;
-    String importado;
+    Double precio;
+    int importado;
     String nombreTipo;
     private int position;
 
@@ -80,7 +80,9 @@ public class ProductoView extends AppCompatActivity {
             public void onClick(View v) {
                 codigo = ((EditText) findViewById(R.id.codigo)).getText().toString();
                 nombreProducto = ((EditText) findViewById(R.id.nombre_producto)).getText().toString();
-                precio = ((EditText) findViewById(R.id.precio)).getText().toString();
+                try{
+                    precio = Double.parseDouble(((EditText) findViewById(R.id.precio)).getText().toString());
+                } catch (NumberFormatException e) { }
                 nombreTipo =  spinner.getSelectedItem().toString();
                 position = getIntent().getIntExtra("position",-1);
 
@@ -89,7 +91,7 @@ public class ProductoView extends AppCompatActivity {
                 if (validate()) {
                     int selectedId = radioGroup.getCheckedRadioButtonId();
                     radioButton = (RadioButton) findViewById(selectedId);
-                    importado = radioButton.getText().toString();
+                    importado = Integer.parseInt(radioButton.getText().toString());
 
                     Intent intent = new Intent(ProductoView.this, ProductosList.class);
                     intent.putExtra("codigo", codigo);
@@ -130,7 +132,7 @@ public class ProductoView extends AppCompatActivity {
         if (radioGroup.getCheckedRadioButtonId() == -1) {
             go = false;
         }
-        if (TextUtils.isEmpty(precio)) {
+        if (TextUtils.isEmpty(((EditText) findViewById(R.id.precio)).getText().toString())) {
             go = false;
         }
         if(spinner.getSelectedItem().equals(" ")) {

@@ -59,7 +59,7 @@ public class ProductosList extends AppCompatActivity {
             }
         });
 
-
+        addData();
         adapter = new ArrayAdapter<>(this, simple_list_item_1, Data.listaProducto);
         listview.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -142,6 +142,20 @@ public class ProductosList extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void addData() {
+        Producto producto = new Producto();
+        producto.setCodigo(getIntent().getStringExtra("codigo"));
+        producto.setNombreProducto(getIntent().getStringExtra("nombreProducto"));
+        producto.setPrecio(getIntent().getDoubleExtra("precio",0));
+        producto.setImportado(getIntent().getIntExtra("importado",-1));
+        producto.setNombreTipo(getIntent().getStringExtra("nombreTipo"));
+        int position = getIntent().getIntExtra("position", -1);
+        if(position != -1)
+            Data.listaProducto.remove(position);
+        if (producto.getCodigo() != null)
+            Data.listaProducto.add(producto);
     }
 
 }

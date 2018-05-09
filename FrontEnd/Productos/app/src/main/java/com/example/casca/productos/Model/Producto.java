@@ -1,10 +1,10 @@
 package com.example.casca.productos.Model;
 
-/**
- * Created by casca on 07/05/2018.
- */
+
 
 public class Producto {
+
+    public Producto(){}
 
     public Producto(String codigo, String nombreProducto, double precio, int importado, String nombreTipo) {
         this.codigo = codigo;
@@ -56,13 +56,11 @@ public class Producto {
 
     @Override
     public String toString() {
-        return "Productos{" +
-                "codigo='" + codigo + '\'' +
-                ", nombreProducto='" + nombreProducto + '\'' +
-                ", precio=" + precio +
-                ", importado=" + importado +
-                ", nombreTipo='" + nombreTipo + '\'' +
-                '}';
+        return "Codigo: " + codigo + "\n" +
+                "Nombre Producto: " + nombreProducto + "\n" +
+                "Precio: " + precio + "\n" +
+                "Importado: " + importado + "\n" +
+                "Tipo : " + nombreTipo + "\n" ;
     }
 
     String codigo;
