@@ -16,6 +16,7 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 
 
+import com.example.casca.productos.ConnectionHelper.JsonConnection;
 import com.example.casca.productos.Model.Producto;
 import com.example.casca.productos.R;
 import com.example.casca.productos.Utils.Data;
@@ -23,11 +24,13 @@ import com.example.casca.productos.Utils.Data;
 import static android.R.layout.simple_list_item_1;
 
 public class ProductosList extends AppCompatActivity {
+    public static final String url="http://10.0.2.2:8080/Servlet/Servlet?accion=consultarProductos";
     ArrayAdapter<Producto> adapter;
     SwipeMenuListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_productos_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -59,7 +62,6 @@ public class ProductosList extends AppCompatActivity {
             }
         });
 
-        addData();
         adapter = new ArrayAdapter<>(this, simple_list_item_1, Data.listaProducto);
         listview.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -116,7 +118,7 @@ public class ProductosList extends AppCompatActivity {
                         tipo = Data.listaProducto.get(position).getNombreTipo();
                         edit = true;
 
-                        Intent intent = new Intent(ProductosList.this, Productos.class);
+                        Intent intent = new Intent(ProductosList.this, ProductoView.class);
 
                         Producto producto = (Producto) listview.getItemAtPosition(position);
                         //intent.putExtra("producto", producto);
@@ -141,11 +143,12 @@ public class ProductosList extends AppCompatActivity {
                 return false;
             }
         });
-
+        addData();
+        adapter.notifyDataSetChanged();
     }
 
     public void addData() {
-        Producto producto = new Producto();
+/*        Producto producto = new Producto();
         producto.setCodigo(getIntent().getStringExtra("codigo"));
         producto.setNombreProducto(getIntent().getStringExtra("nombreProducto"));
         producto.setPrecio(getIntent().getDoubleExtra("precio",0));
@@ -156,6 +159,10 @@ public class ProductosList extends AppCompatActivity {
             Data.listaProducto.remove(position);
         if (producto.getCodigo() != null)
             Data.listaProducto.add(producto);
+    */
+        JsonConnection jconexion = new JsonConnection();
+        jconexion.execute(new String[]{url,"GET"});
+
     }
 
 }

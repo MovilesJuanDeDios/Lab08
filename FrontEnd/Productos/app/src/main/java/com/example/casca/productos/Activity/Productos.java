@@ -13,13 +13,14 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
+import com.example.casca.productos.ConnectionHelper.JsonConnection;
 import com.example.casca.productos.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Productos extends AppCompatActivity {
-
+    public static final String url="http://10.0.2.2:8080/Servlet/Servlet?accion=consultarProductos";
     private Button btn_agregar;
     private Button btn_cancelar;
     private RadioGroup radioGroup;
@@ -46,7 +47,6 @@ public class Productos extends AppCompatActivity {
 
         spinner = (Spinner) findViewById(R.id.spinner_tipo);
 
-        list.add(" ");
         list.add("Canasta Básica");
         list.add("Popular");
         list.add("Suntuario");
@@ -54,6 +54,11 @@ public class Productos extends AppCompatActivity {
         adapterTipo = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, list);
         adapterTipo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapterTipo);
+
+
+        JsonConnection jconexion = new JsonConnection();
+        jconexion.execute(new String[]{url,"GET"});
+
 
         agregar();
         cancelar();

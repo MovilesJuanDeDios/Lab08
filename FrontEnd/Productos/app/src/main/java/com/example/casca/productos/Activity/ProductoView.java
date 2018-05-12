@@ -49,7 +49,6 @@ public class ProductoView extends AppCompatActivity {
 
         spinner = (Spinner) findViewById(R.id.spinner_tipo);
 
-        list.add(" ");
         list.add("Canasta Básica");
         list.add("Popular");
         list.add("Suntuario");
@@ -64,11 +63,22 @@ public class ProductoView extends AppCompatActivity {
     }
 
     public void editData() {
-       /* ((EditText) findViewById(R.id.codigo)).setEnabled(false);
-        ((EditText) findViewById(R.id.nombre_producto)).setText(getIntent().getStringExtra("nombre_producto"));
-        ((EditText) findViewById(R.id.precio)).setText(getIntent().getStringExtra("precio"));
-        ((RadioButton) findViewById(R.id.importado)).setText(getIntent().getStringExtra("importado"));
-        ((Spinner)findViewById(R.id.spinner_tipo)).setSelection(adapterTipo.getPosition(getIntent().getStringExtra("tipo")));*/
+        ((EditText) findViewById(R.id.codigo)).setText(getIntent().getStringExtra("codigo"));
+        ((EditText) findViewById(R.id.codigo)).setEnabled(false);
+        ((EditText) findViewById(R.id.nombre_producto)).setText(getIntent().getStringExtra("nombre"));
+        ((EditText) findViewById(R.id.precio)).setText(Double.toString(getIntent().getDoubleExtra("precio",0)));
+        int choosen=getIntent().getIntExtra("importado",0);
+        RadioButton radio1 = (RadioButton) findViewById(R.id.importado);
+        RadioButton radio2 = (RadioButton) findViewById(R.id.nacional);
+        if(choosen==1){
+            radio1.setChecked(true);
+            radio2.setChecked(false);
+        }
+        else{
+            radio1.setChecked(false);
+            radio2.setChecked(true);
+        }
+        ((Spinner)findViewById(R.id.spinner_tipo)).setSelection(adapterTipo.getPosition(getIntent().getStringExtra("tipo")));
     }
 
     private void agregar() {
