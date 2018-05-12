@@ -5,4 +5,5 @@
     <string name="title_activity_producto_view">ProductoView</string>
 
     <color name="black">#990000</color>
+    <string name="title_activity_splash_screen">SplashScreen</string>
 </resources>
