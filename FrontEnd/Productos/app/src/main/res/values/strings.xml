@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">Productos</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_producto">Producto</string>
-    <string name="title_activity_producto_view">ProductoView</string>
-
-    <color name="black">#990000</color>
-    <string name="title_activity_splash_screen">SplashScreen</string>
-</resources>
