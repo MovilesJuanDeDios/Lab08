@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.casca.productos.ConnectionHelper.JsonConnection;
 import com.example.casca.productos.R;
+import com.example.casca.productos.Utils.Data;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -27,6 +28,8 @@ public class SplashScreen extends AppCompatActivity{
         progressBar.setProgress(0);
         textView=(TextView)findViewById(R.id.textView);
         textView.setText("");
+
+        Data.listaProducto.clear();
 
         JsonConnection jconexion = new JsonConnection();
         jconexion.execute(new String[]{url,"GET"});
