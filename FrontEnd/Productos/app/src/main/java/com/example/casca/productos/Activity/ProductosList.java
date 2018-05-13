@@ -143,8 +143,7 @@ public class ProductosList extends AppCompatActivity {
                 return false;
             }
         });
-        addData();
-        adapter.notifyDataSetChanged();
+
     }
 
     public void addData() {

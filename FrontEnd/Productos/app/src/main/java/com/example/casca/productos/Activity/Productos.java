@@ -15,12 +15,13 @@ import android.widget.Spinner;
 
 import com.example.casca.productos.ConnectionHelper.JsonConnection;
 import com.example.casca.productos.R;
+import com.example.casca.productos.Utils.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Productos extends AppCompatActivity {
-    public static final String url="http://10.0.2.2:8080/Servlet/Servlet?accion=consultarProductos";
+    public static final String url2="http://10.0.2.2:8080/Servlet/Servlet?accion=consultarProductos";
     private Button btn_agregar;
     private Button btn_cancelar;
     private RadioGroup radioGroup;
@@ -55,14 +56,8 @@ public class Productos extends AppCompatActivity {
         adapterTipo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapterTipo);
 
-
-        JsonConnection jconexion = new JsonConnection();
-        jconexion.execute(new String[]{url,"GET"});
-
-
         agregar();
         cancelar();
-
     }
 
     private void agregar() {
@@ -84,20 +79,29 @@ public class Productos extends AppCompatActivity {
                     int selectedId = radioGroup.getCheckedRadioButtonId();
                     radioButton = (RadioButton) findViewById(selectedId);
                     importado = radioButton.getText().toString();
+                    int imp=0;
+                    if(importado.equals("Importado"))
+                        imp=1;
+                    final String url = "http://10.0.2.2:8080/Servlet/Servlet?accion=agregar&codigo="+"\""+codigo+"\""+"&nombre="+"\""+nombreProducto+"\""+"&precio="+precio+"&importado="+imp+"&tipo="+"\""+nombreTipo+"\"";
 
+                    Data.listaProducto.clear();
+                    JsonConnection jconexion = new JsonConnection();
+                    jconexion.execute(new String[]{url,"POST"});
                     Intent intent = new Intent(Productos.this, ProductosList.class);
-                    intent.putExtra("codigo", codigo);
+                    /*intent.putExtra("codigo", codigo);
                     intent.putExtra("nombreProducto", nombreProducto);
                     intent.putExtra("precio", precio);
                     intent.putExtra("importado", importado);
                     intent.putExtra("nombreTipo", nombreTipo);
-                    intent.putExtra("position", position);
+                    intent.putExtra("position", position);*/
                     startActivity(intent);
                     finish();
                 }
 
             }
         });
+        JsonConnection jconexion = new JsonConnection();
+        jconexion.execute(new String[]{url2,"GET"});
     }
 
     private void cancelar() {
