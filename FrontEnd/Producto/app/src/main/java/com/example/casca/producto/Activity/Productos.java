@@ -121,6 +121,11 @@ public class Productos extends AppCompatActivity {
         if (TextUtils.isEmpty(codigo)) {
             go = false;
         }
+        else{
+            for(int i=0;i<Data.listaProducto.size();i++)
+                if (Data.listaProducto.get(i).getCodigo().equals(codigo))
+                    go = false;
+        }
         if (TextUtils.isEmpty(nombreProducto)) {
             go = false;
         }
