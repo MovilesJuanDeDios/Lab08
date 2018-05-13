@@ -18,7 +18,7 @@ public class ServicioProducto extends Servicio {
     private static final String INSERTAPRODUCTO = "{call insertarProducto(?,?,?,?,?)}";
     private static final String LISTARPRODUCTO = "{?=call listarProducto()}";
     private static final String BUSCARPRODUCTO = "{?=call buscarProducto(?)}";
-    private static final String ACTUALIZARPRODUCTO = "{call actualizarProducto(?,?,?)}";
+    private static final String ACTUALIZARPRODUCTO = "{call actualizarProducto(?,?,?,?,?)}";
     private static final String ELIMINARPRODUCTO = "{call eliminarProducto(?)}";
     private static final String IMPUESTO = "{?=call impuesto(?,?,?)}";
     private static final String TOTALPAGAR = "{?=call totalPagar(?,?)}";
@@ -154,9 +154,11 @@ public class ServicioProducto extends Servicio {
         PreparedStatement pstmt = null;
         try {
             pstmt = cn.prepareStatement(ACTUALIZARPRODUCTO);
-            pstmt.setString(1, producto.getNombreProducto());
-            pstmt.setDouble(2, producto.getPrecio());
-            pstmt.setInt(3, producto.getImportado());
+            pstmt.setString(1, producto.getCodigo());
+            pstmt.setString(2, producto.getNombreProducto());
+            pstmt.setDouble(3, producto.getPrecio());
+            pstmt.setInt(4, producto.getImportado());
+            pstmt.setString(5, producto.getTipo());
             boolean resultado = pstmt.execute();
 
             if (resultado == true) {

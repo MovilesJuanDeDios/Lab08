@@ -56,50 +56,55 @@ public class Servlet extends HttpServlet {
             String accion = request.getParameter("accion");
             List<Double> listaCalculo = new ArrayList();
             switch (accion) {
-                
+                                    
+                case "agregar":
+                          p.setCodigo(request.getParameter("codigo"));
+                          p.setNombreProducto(request.getParameter("nombre"));
+                          p.setPrecio(Double.parseDouble(request.getParameter("precio")));
+                          p.setImportado(Integer.parseInt(request.getParameter("importado")));
+                          p.setTipo(request.getParameter("tipo")); 
+
+                          sp.insertarProducto(p);
+
+                          out.print("C~El objeto fue ingresado correctamente");
+                          break;
+
+                case "set":
+                        p.setCodigo(request.getParameter("codigo"));
+                        p.setNombreProducto(request.getParameter("nombre"));
+                        p.setPrecio(Double.parseDouble(request.getParameter("precio")));
+                        p.setImportado(Integer.parseInt(request.getParameter("importado")));
+                        p.setTipo(request.getParameter("tipo")); 
+
+                        sp.actualizarProducto(p);
+
+                        out.print("C~El objeto fue actualizado correctamente");
+                        break;
+
                 case "consultarProductos":
-                    
+
                     List<Producto> list = new ArrayList(sp.listarProducto());
                     for (Producto product : list) {
-                        
+
                         listaCalculo.add(sp.impuesto(product));
                         listaCalculo.add(sp.totalPagar(product));
-                        
+
                     }
                     json = new Gson().toJson(list);   
                     json2 = new Gson().toJson(listaCalculo);  
                     out.print(json);
                     break;
-                    
-          case "agregar":
-                    p.setCodigo(request.getParameter("codigo"));
-                    p.setNombreProducto(request.getParameter("nombre"));
-                    p.setPrecio(Double.parseDouble(request.getParameter("precio")));
-                    p.setImportado(Integer.parseInt(request.getParameter("importado")));
-                    p.setTipo(request.getParameter("tipo")); 
-                    
-                    sp.insertarProducto(p);
-                    
-                    out.print("C~El objeto fue ingresado correctamente");
+
+                case "delete":
+                    String prod = request.getParameter("nombre");
+                    sp.eliminarProducto(prod);
+                    out.print("C~El objeto fue eliminado correctamente");
                     break;
-                    
-                case "consultarPorNombre":
-                    String nombre = request.getParameter("nombre");
-                    json = new Gson().toJson(sp.buscarProducto(nombre));
-                    out.print(json);
-                    break;
-                    /*
-                case "getImpuesto":
-                    request.set
-                    sp.impuesto(request.getParameter("rowData"));
-                    Double imp = Double.parseDouble(request.getParameter("impuesto");
-                    out.print();
-                break;
-                    */
+
                 default:
                     out.print("E~No se indicó la acción que se desea realizare");
                     break;
-            }
+                  }
 
         } catch (NumberFormatException e) {
             out.print("E~" + e.getMessage());

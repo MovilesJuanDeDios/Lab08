@@ -38,10 +38,10 @@ END;
 /
 
 -- ----------------- ACTUALIZAR PRODUCTO ----------------- 
-CREATE OR REPLACE PROCEDURE actualizarProducto(nombreProductoin IN Producto.nombreProducto%TYPE, precioin IN Producto.precio%TYPE,importadoin IN Producto.importado%TYPE)
+CREATE OR REPLACE PROCEDURE actualizarProducto(codigoin IN Producto.codigo%TYPE, nombreProductoin IN Producto.nombreProducto%TYPE, precioin IN Producto.precio%TYPE,importadoin IN Producto.importado%TYPE, nombreTipoin IN Producto.nombreTipo%TYPE)
 AS
 BEGIN
-	UPDATE Producto SET precio=precioin,importado=importadoin WHERE nombreProducto=nombreProductoin;
+	UPDATE Producto SET nombreProducto=nombreProductoin, precio=precioin, importado=importadoin, nombreTipo=nombreTipoin WHERE codigo=codigoin;
 END;
 /
 

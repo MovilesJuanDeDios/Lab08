@@ -134,6 +134,11 @@ public class ProductosList extends AppCompatActivity {
                         finish();
                         break;
                     case 1:
+                        Producto prod =Data.listaProducto.get(position);
+                        final String url = "http://10.0.2.2:8080/Servlet/Servlet?accion=delete&nombre="+prod.getNombreProducto();
+                        JsonConnection jconexion = new JsonConnection();
+                        jconexion.execute(new String[]{url,"POST"});
+
                         Data.listaProducto.remove(position);
                         adapter.notifyDataSetChanged();
                         break;

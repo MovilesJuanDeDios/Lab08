@@ -93,8 +93,6 @@ public class Productos extends AppCompatActivity {
                     Double precioP = Double.parseDouble(precio);
                     Producto producto= new Producto(codigo,nombreProducto,precioP,imp,nombreTipo);
                     Data.listaProducto.add(producto);
-                    /*JsonConnection jconexion2 = new JsonConnection();
-                    jconexion2.execute(new String[]{url2,"GET"});*/
 
                     Intent intent = new Intent(Productos.this, ProductosList.class);
                     startActivity(intent);

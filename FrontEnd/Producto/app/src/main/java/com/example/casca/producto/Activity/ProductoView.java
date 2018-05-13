@@ -13,7 +13,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
+import com.example.casca.producto.ConnectionHelper.JsonConnection;
+import com.example.casca.producto.Model.Producto;
 import com.example.casca.producto.R;
+import com.example.casca.producto.Utils.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +30,8 @@ public class ProductoView extends AppCompatActivity {
 
     String codigo;
     String nombreProducto;
-    Double precio;
-    int importado;
+    String precio;
+    String importado;
     String nombreTipo;
     private int position;
 
@@ -47,7 +50,7 @@ public class ProductoView extends AppCompatActivity {
 
         spinner = (Spinner) findViewById(R.id.spinner_tipo);
 
-        list.add("Canasta Básica");
+        list.add("Canasta Basica");
         list.add("Popular");
         list.add("Suntuario");
 
@@ -62,12 +65,13 @@ public class ProductoView extends AppCompatActivity {
 
     public void editData() {
         ((EditText) findViewById(R.id.codigo)).setText(getIntent().getStringExtra("codigo"));
-        ((EditText) findViewById(R.id.codigo)).setEnabled(false);
+        (findViewById(R.id.codigo)).setEnabled(false);
         ((EditText) findViewById(R.id.nombre_producto)).setText(getIntent().getStringExtra("nombre"));
-        ((EditText) findViewById(R.id.precio)).setText(Double.toString(getIntent().getDoubleExtra("precio",0)));
+        Double precio=getIntent().getDoubleExtra("precio",0);
+        ((EditText) findViewById(R.id.precio)).setText(precio.toString());
         int choosen=getIntent().getIntExtra("importado",0);
-        RadioButton radio1 = (RadioButton) findViewById(R.id.importado);
-        RadioButton radio2 = (RadioButton) findViewById(R.id.nacional);
+        RadioButton radio1 = findViewById(R.id.importado);
+        RadioButton radio2 = findViewById(R.id.nacional);
         if(choosen==1){
             radio1.setChecked(true);
             radio2.setChecked(false);
@@ -76,7 +80,30 @@ public class ProductoView extends AppCompatActivity {
             radio1.setChecked(false);
             radio2.setChecked(true);
         }
+        String tipo = getIntent().getStringExtra("tipo");
         ((Spinner)findViewById(R.id.spinner_tipo)).setSelection(adapterTipo.getPosition(getIntent().getStringExtra("tipo")));
+
+        if(tipo.equals("Canasta Basica")){
+            ((EditText) findViewById(R.id.porcentaje)).setText("5");
+            String impuesto=Double.toString(0.05*precio);
+            ((EditText) findViewById(R.id.impuesto)).setText(impuesto);
+            String pfinal=Double.toString(Double.parseDouble(impuesto)+precio);
+            ((EditText) findViewById(R.id.precio_final)).setText(pfinal);
+        }
+        if(tipo.equals("Popular")){
+            ((EditText) findViewById(R.id.porcentaje)).setText("10");
+            String impuesto=Double.toString(0.10*precio);
+            ((EditText) findViewById(R.id.impuesto)).setText(impuesto);
+            String pfinal=Double.toString(Double.parseDouble(impuesto)+precio);
+            ((EditText) findViewById(R.id.precio_final)).setText(pfinal);
+        }
+        if(tipo.equals("Suntuario")){
+            ((EditText) findViewById(R.id.porcentaje)).setText("15");
+            String impuesto=Double.toString(0.15*precio);
+            ((EditText) findViewById(R.id.impuesto)).setText(impuesto);
+            String pfinal=Double.toString(Double.parseDouble(impuesto)+precio);
+            ((EditText) findViewById(R.id.precio_final)).setText(pfinal);
+        }
     }
 
     private void agregar() {
@@ -88,9 +115,7 @@ public class ProductoView extends AppCompatActivity {
             public void onClick(View v) {
                 codigo = ((EditText) findViewById(R.id.codigo)).getText().toString();
                 nombreProducto = ((EditText) findViewById(R.id.nombre_producto)).getText().toString();
-                try{
-                    precio = Double.parseDouble(((EditText) findViewById(R.id.precio)).getText().toString());
-                } catch (NumberFormatException e) { }
+                precio = ((EditText) findViewById(R.id.precio)).getText().toString();
                 nombreTipo =  spinner.getSelectedItem().toString();
                 position = getIntent().getIntExtra("position",-1);
 
@@ -99,15 +124,22 @@ public class ProductoView extends AppCompatActivity {
                 if (validate()) {
                     int selectedId = radioGroup.getCheckedRadioButtonId();
                     radioButton = (RadioButton) findViewById(selectedId);
-                    importado = Integer.parseInt(radioButton.getText().toString());
+                    importado = radioButton.getText().toString();
+                    int imp=0;
+                    if(importado.equals("Importado"))
+                        imp=1;
+                    final String url = "http://10.0.2.2:8080/Servlet/Servlet?accion=set&codigo="+codigo+"&nombre="+nombreProducto+"&precio="+precio+"&importado="+imp+"&tipo="+nombreTipo;
+
+                    JsonConnection jconexion = new JsonConnection();
+                    jconexion.execute(new String[]{url,"POST"});
+
+                    Double precioP = Double.parseDouble(precio);
+                    Data.listaProducto.get(position).setNombreProducto(nombreProducto);
+                    Data.listaProducto.get(position).setPrecio(precioP);
+                    Data.listaProducto.get(position).setImportado(imp);
+                    Data.listaProducto.get(position).setNombreTipo(nombreTipo);
 
                     Intent intent = new Intent(ProductoView.this, ProductosList.class);
-                    intent.putExtra("codigo", codigo);
-                    intent.putExtra("nombreProducto", nombreProducto);
-                    intent.putExtra("precio", precio);
-                    intent.putExtra("importado", importado);
-                    intent.putExtra("nombreTipo", nombreTipo);
-                    intent.putExtra("position", position);
                     startActivity(intent);
                     finish();
                 }
